@@ -1,4 +1,4 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApps } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
@@ -16,7 +16,10 @@ const firebaseConfig = {
 };
 
 // V9
-const firebaseApp = initializeApp(firebaseConfig);
+let firebaseApp;
+if (!getApps().length) {
+  firebaseApp = initializeApp(firebaseConfig);
+}
 const analytics = getAnalytics(firebaseApp);
 
 const auth = getAuth(firebaseApp);

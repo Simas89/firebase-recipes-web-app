@@ -4,6 +4,8 @@ import appReducer from "./app/appReducer";
 
 export const store = configureStore({
   reducer: { app: appReducer },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ serializableCheck: false }),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

@@ -2,8 +2,8 @@ import { createTheme } from "@mui/material/styles";
 
 let theme = createTheme({
   palette: {
-    primary: { main: "#8B201D" },
-    secondary: { main: "#c62e2b" },
+    primary: { main: "#1a73e9" },
+    secondary: { main: "#ffcb2d" },
   },
   components: {
     MuiButton: { defaultProps: { disableRipple: true } },

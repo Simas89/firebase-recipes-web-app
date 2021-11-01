@@ -1,27 +1,28 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "state";
 // import { current } from "immer";
 import { createSelector } from "reselect";
+import { User } from "@firebase/auth";
 
 interface AppState {
-  test: number;
+  user: User | null;
 }
 
 const initialState: AppState = {
-  test: 0,
+  user: null,
 };
 
 export const slice = createSlice({
   name: "app",
   initialState,
   reducers: {
-    setTest: (state) => {
-      state.test += 1;
+    setUser: (state, action: PayloadAction<User | null>) => {
+      state.user = action.payload;
     },
   },
 });
 
-export const { setTest } = slice.actions;
+export const { setUser } = slice.actions;
 
 export const animationControllsSelector = createSelector(
   (state: RootState) => state.app,

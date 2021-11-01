@@ -1,4 +1,4 @@
-import { Button, Typography } from "@mui/material";
+import { Button, Container, Typography } from "@mui/material";
 
 import React from "react";
 
@@ -12,10 +12,10 @@ const StyledTypography = styled(Typography)`
 
 const HomeScreen: React.FC = () => {
   return (
-    <>
+    <Container>
       <StyledTypography>Hello</StyledTypography>
       <Button variant="contained">Hi there</Button>
-    </>
+    </Container>
   );
 };
 

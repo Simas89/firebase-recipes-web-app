@@ -3,7 +3,7 @@ import { slice } from "state/app/appReducer";
 import { bindActionCreators } from "redux";
 import { useStateDispatch } from "state/typedHooks";
 
-export const useActionsField = () => {
+export const useActionsApp = () => {
   const { actions } = slice;
   const dispatch = useStateDispatch();
 

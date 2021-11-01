@@ -30,6 +30,3 @@ export const loginWithGoogle = (): Promise<UserCredential> => {
 export const subscribeToAuthChanges = (callback: AuthChangesCB) => {
   onAuthStateChanged(auth, (user) => callback(user));
 };
-
-// const cb: AuthChangesCB = (a) => {};
-// subscribeToAuthChanges(cb);
