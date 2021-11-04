@@ -9,6 +9,9 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "state";
 import "firebaseApp/config";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
 
 ReactDOM.render(
   <React.StrictMode>
@@ -17,7 +20,9 @@ ReactDOM.render(
         <StyledThemeProvider theme={theme}>
           <CssBaseline />
           <Provider store={store}>
-            <App />
+            <QueryClientProvider client={queryClient}>
+              <App />
+            </QueryClientProvider>
           </Provider>
         </StyledThemeProvider>
       </MuiThemeProvider>
