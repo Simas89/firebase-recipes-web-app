@@ -1,6 +1,33 @@
 import { DocumentData, QuerySnapshot } from "@firebase/firestore";
-import { Collections } from "firebaseApp/firestore";
-import { RecipesResponse } from ".";
+import { readDocuments, FirestoreQueryProps } from "firebaseApp/firestore";
+import { Collections } from "./api";
+
+export const fetchDocs = async ({
+  collection,
+  queries,
+  orderByField,
+  orderByDirection,
+  perPage,
+  cursorId,
+}: FirestoreQueryProps) => {
+  try {
+    const snapshot = await readDocuments({
+      collection,
+      queries,
+      orderByField,
+      orderByDirection,
+      perPage,
+      cursorId,
+    });
+
+    const docs = parseSnapshot(snapshot);
+    const parsedDocs = await parseDocs(collection, docs);
+
+    return parsedDocs;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
 
 export const parseSnapshot = (snap: QuerySnapshot<DocumentData>) =>
   snap.docs.map((el) => {
@@ -17,7 +44,7 @@ export const parseDocs = async (
 };
 
 export const documentCollectionParser = {
-  recipes: (el: any): Promise<RecipesResponse> => {
+  recipes: (el: any) => {
     return new Promise(async (resolve) => {
       const id = el.id;
       const category = el.category;
@@ -27,6 +54,13 @@ export const documentCollectionParser = {
       const publishDate = el.publishDate.toDate().toLocaleDateString();
 
       resolve({ id, category, ingredients, isPublished, name, publishDate });
+    });
+  },
+  test: (el: any) => {
+    return new Promise(async (resolve) => {
+      const id = el.id;
+
+      resolve({ id, ...el });
     });
   },
 };

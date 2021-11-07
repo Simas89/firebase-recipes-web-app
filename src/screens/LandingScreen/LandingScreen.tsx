@@ -1,12 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container } from "@mui/material";
-import { Montserrat } from "common/typography";
+import styled from "styled-components";
+import { Form } from ".";
+import { useQuery } from "react-query";
+import { fetchDocs } from "firebaseApp/utils";
+import { addCollectionListener } from "firebaseApp/firestore";
+
+const StyledContainer = styled(Container)``;
 
 const LandingScreen: React.FC = () => {
+  const { data } = useQuery("test", () => fetchDocs({ collection: "test" }));
+
+  console.log(data);
+
+  useEffect(() => {
+    const unsubscribe = addCollectionListener("test", (snap) =>
+      console.log(snap)
+    );
+
+    return () => unsubscribe();
+  }, []);
+
   return (
-    <Container>
-      <Montserrat align="center">Please Login</Montserrat>
-    </Container>
+    <StyledContainer>
+      <Form />
+    </StyledContainer>
   );
 };
 

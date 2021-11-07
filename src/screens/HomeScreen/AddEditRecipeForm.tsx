@@ -16,11 +16,14 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Box } from "@mui/system";
-import { IRecipe } from "types";
+import { useMutation } from "react-query";
+import { createDocument } from "firebaseApp/firestore";
+import { RecipeDocModel } from "firebaseApp/api";
 
 const Form = styled.form`
   margin: auto;
-  margin-top: 20px;
+  margin-top: 30px;
+  margin-bottom: 30px;
   position: relative;
   max-width: 400px;
 
@@ -37,13 +40,7 @@ const StyledSelect = styled(Select).attrs({ size: "small" })`
   margin-bottom: 10px;
 `;
 
-interface IAddEditRecipeForm {
-  handleAddRecipe: (a: IRecipe) => Promise<void>;
-}
-
-export const AddEditRecipeForm: React.FC<IAddEditRecipeForm> = ({
-  handleAddRecipe,
-}) => {
+export const AddEditRecipeForm: React.FC = () => {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [publishDate, setPublishDate] = useState(
@@ -52,6 +49,18 @@ export const AddEditRecipeForm: React.FC<IAddEditRecipeForm> = ({
   const [directions, setDirections] = useState("");
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [ingredientName, setIngredientName] = useState("");
+
+  const { mutate: saveRecipe, isLoading } = useMutation(
+    (newRecipe: RecipeDocModel) => createDocument("recipes", newRecipe),
+    {
+      onSuccess: (data) => {
+        console.log("Yay!:", data);
+      },
+      onError: (err) => {
+        console.log(err);
+      },
+    }
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,7 +80,7 @@ export const AddEditRecipeForm: React.FC<IAddEditRecipeForm> = ({
       ingredients,
     };
 
-    handleAddRecipe(recipe);
+    saveRecipe(recipe);
   };
 
   const handleAddIngredient = () => {
@@ -195,6 +204,7 @@ export const AddEditRecipeForm: React.FC<IAddEditRecipeForm> = ({
                 color="secondary"
                 variant="contained"
                 type="submit"
+                disabled={isLoading}
               >
                 Create Recipe
               </Button>

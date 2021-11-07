@@ -8,8 +8,11 @@ import {
   onAuthStateChanged,
   signOut,
   UserCredential,
+  User,
 } from "firebase/auth";
-import { AuthChangesCB, AuthUser } from "./authService.types";
+
+type AuthUser = (a: string, b: string) => Promise<UserCredential>;
+type AuthChangesCB = (a: User | null) => void;
 
 export const registerUser: AuthUser = (email, password) =>
   createUserWithEmailAndPassword(auth, email, password);

@@ -10,6 +10,7 @@ import { Provider } from "react-redux";
 import { store } from "state";
 import "firebaseApp/config";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ ReactDOM.render(
           <Provider store={store}>
             <QueryClientProvider client={queryClient}>
               <App />
+              <ReactQueryDevtools />
             </QueryClientProvider>
           </Provider>
         </StyledThemeProvider>

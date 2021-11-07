@@ -1,6 +1,9 @@
 import { analytics } from "../config";
 import { logEvent } from "firebase/analytics";
-import { EventLogger } from "./analyticsService.types";
+import { EventParams } from "firebase/analytics";
+
+type EventName = "test_event" | "Event2";
+type EventLogger = (a: EventName, b: EventParams) => void;
 
 export const eventLogger: EventLogger = (eventName, params) =>
   logEvent(analytics, eventName, params);

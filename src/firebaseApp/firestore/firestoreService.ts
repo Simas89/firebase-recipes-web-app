@@ -12,8 +12,21 @@ import {
   getDocs,
   updateDoc,
   deleteDoc,
+  onSnapshot,
 } from "firebase/firestore";
-import { Collections, FirestoreQueryProps } from "./firestoreService.types";
+
+type SnapshotCallBack = <T>(cb: T) => void;
+
+export type Collections = "recipes" | "test";
+
+export interface FirestoreQueryProps {
+  collection: Collections;
+  queries?: any[];
+  orderByField?: any;
+  orderByDirection?: any;
+  perPage?: number;
+  cursorId?: any;
+}
 
 export const createDocument = (collection: Collections, document: any) =>
   addDoc(firestoreCollection(firestore, collection), document);
@@ -53,6 +66,8 @@ export const readDocuments = async ({
     queryConstraints.push(startAfter(document));
   }
 
+  // console.log(queryConstraints);
+
   const firestoreQuery = query(collectionRef, ...queryConstraints);
 
   return getDocs(firestoreQuery);
@@ -66,3 +81,27 @@ export const updateDocument = (
 
 export const deleteDocument = (collection: Collections, id: string) =>
   deleteDoc(doc(firestoreCollection(firestore, collection), id));
+
+export const addDocListener = (
+  collection: Collections,
+  id: string,
+  callback: SnapshotCallBack
+) =>
+  onSnapshot(doc(firestore, collection, id), (docSnapshot) => {
+    callback(docSnapshot);
+    console.log(" data: ", docSnapshot.data());
+  });
+
+export const addCollectionListener = (
+  collection: Collections,
+  callback: SnapshotCallBack
+) =>
+  onSnapshot(firestoreCollection(firestore, collection), (querySnapshot) => {
+    callback(querySnapshot);
+    // console.log(querySnapshot.docChanges());
+    // const data: any[] = [];
+    // querySnapshot.forEach((doc) => {
+    //   data.push(doc.data());
+    // });
+    // console.log(data);
+  });
